@@ -1,5 +1,7 @@
 'use strict';
 
+let highScore = 0;
+
 let random = Math.trunc(Math.random() * 20 + 1);
 let score = 5;
 let pause = false;
@@ -9,6 +11,18 @@ console.log(random);
 const decrementScore = () => {
   score > 0 ? score-- : (score = 0);
   document.querySelector('.score').textContent = score;
+};
+
+const win = () => {
+  pause = true;
+  document.querySelector('.message').textContent = 'Correct !';
+  document.querySelector('body').style.backgroundColor = '#60b347';
+  document.querySelector('.number').textContent = random;
+  if (score > highScore) {
+    highScore = score;
+    document.querySelector('.highscore').textContent = highScore;
+  }
+  highScore = score > highScore ? score : highScore;
 };
 
 const lost = () => {
@@ -26,10 +40,7 @@ const eventHandlerCheck = () => {
   if (!guess) {
     document.querySelector('.message').textContent = 'No number !';
   } else if (guess === random) {
-    pause = true;
-    document.querySelector('.message').textContent = 'Correct !';
-    document.querySelector('body').style.backgroundColor = '#60b347';
-    document.querySelector('.number').textContent = random;
+    win();
   } else if (guess < random) {
     if (score > 1) {
       document.querySelector('.message').textContent = 'Too low !';
